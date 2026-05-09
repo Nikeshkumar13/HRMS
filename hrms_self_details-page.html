@@ -352,7 +352,7 @@
       color: rgba(255, 255, 255, 0.95);
       transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
-    
+
     .dc-icon-box span.text-icon {
       font-size: 28px;
       color: rgba(255, 255, 255, 0.95);
@@ -398,23 +398,53 @@
       letter-spacing: 0.1em;
     }
 
-    .c-data .dc-icon-box { background: linear-gradient(135deg, #0d9298, #0a6b6e); }
-    .c-data .dc-sub { color: #2dd4bf; }
+    .c-data .dc-icon-box {
+      background: linear-gradient(135deg, #0d9298, #0a6b6e);
+    }
 
-    .c-profile .dc-icon-box { background: linear-gradient(135deg, #4ade80, #16a34a); }
-    .c-profile .dc-sub { color: #4ade80; }
+    .c-data .dc-sub {
+      color: #2dd4bf;
+    }
 
-    .c-policy .dc-icon-box { background: linear-gradient(135deg, #fb923c, #ea580c); }
-    .c-policy .dc-sub { color: #fb923c; }
+    .c-profile .dc-icon-box {
+      background: linear-gradient(135deg, #4ade80, #16a34a);
+    }
 
-    .c-campus .dc-icon-box { background: linear-gradient(135deg, #c084fc, #9333ea); }
-    .c-campus .dc-sub { color: #c084fc; }
+    .c-profile .dc-sub {
+      color: #4ade80;
+    }
 
-    .c-finance .dc-icon-box { background: linear-gradient(135deg, #06b6d4, #0891b2); }
-    .c-finance .dc-sub { color: #22d3ee; }
+    .c-policy .dc-icon-box {
+      background: linear-gradient(135deg, #fb923c, #ea580c);
+    }
 
-    .c-track .dc-icon-box { background: linear-gradient(135deg, #facc15, #ca8a04); }
-    .c-track .dc-sub { color: #facc15; }
+    .c-policy .dc-sub {
+      color: #fb923c;
+    }
+
+    .c-campus .dc-icon-box {
+      background: linear-gradient(135deg, #c084fc, #9333ea);
+    }
+
+    .c-campus .dc-sub {
+      color: #c084fc;
+    }
+
+    .c-finance .dc-icon-box {
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+    }
+
+    .c-finance .dc-sub {
+      color: #22d3ee;
+    }
+
+    .c-track .dc-icon-box {
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+    }
+
+    .c-track .dc-sub {
+      color: #facc15;
+    }
 
     @keyframes fadeInDown {
       from {
@@ -455,6 +485,195 @@
       .dc-title {
         font-size: 15px;
       }
+    }
+
+    /* AI Chatbot Styles */
+    .chatbot-wrapper {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 1000;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .chatbot-toggle-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--accent-bright);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(13, 146, 152, 0.3);
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .chatbot-toggle-btn:hover {
+      transform: scale(1.05);
+      background: var(--accent);
+    }
+
+    .chatbot-window {
+      position: absolute;
+      bottom: 80px;
+      right: 0;
+      width: 360px;
+      height: 520px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      border: 1px solid #e5e7eb;
+    }
+
+    .chatbot-window.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+
+    .chatbot-header {
+      background: #0d1e27;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chatbot-header-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .chatbot-header-title i {
+      color: #2dd4bf;
+    }
+
+    .chatbot-close {
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      opacity: 0.8;
+    }
+
+    .chatbot-close:hover {
+      opacity: 1;
+    }
+
+    .chatbot-messages {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background: #f8fafc;
+    }
+
+    .chat-msg {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .chat-msg.bot {
+      background: #e0f2f1;
+      color: #0a6b6e;
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+    }
+
+    .chat-msg.user {
+      background: var(--accent-bright);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .chat-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: -5px;
+      margin-bottom: 5px;
+      padding-left: 5px;
+    }
+
+    .chat-chip {
+      background: #fff;
+      border: 1px solid var(--accent-bright);
+      color: var(--accent-bright);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .chat-chip:hover {
+      background: var(--accent-bright);
+      color: #fff;
+    }
+
+    .chatbot-input-area {
+      padding: 15px;
+      border-top: 1px solid #e5e7eb;
+      background: #fff;
+      display: flex;
+      gap: 10px;
+    }
+
+    .chatbot-input-area input {
+      flex-grow: 1;
+      padding: 10px 15px;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      outline: none;
+      font-size: 13px;
+      color: #333;
+    }
+
+    .chatbot-input-area input:focus {
+      border-color: var(--accent-bright);
+    }
+
+    .chatbot-send-btn {
+      background: var(--accent-bright);
+      color: white;
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .chatbot-send-btn:hover {
+      background: var(--accent);
     }
   </style>
 </head>
@@ -557,8 +776,42 @@
         </div>
       </a>
 
-
     </div>
+  </div>
+
+  <!-- AI Chatbot -->
+  <div class="chatbot-wrapper">
+    <div class="chatbot-window" id="chatbotWindow">
+      <div class="chatbot-header">
+        <div class="chatbot-header-title">
+          <i class="fas fa-brain"></i> Smart AI HRMS
+        </div>
+        <button class="chatbot-close" onclick="toggleChatbot()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="chat-msg bot"></div>
+
+        <div class="chat-chips">
+          <button class="chat-chip" onclick="sendQuickReply('Apply for Leave')">Apply for Leave</button>
+          <button class="chat-chip" onclick="sendQuickReply('Check Leave Status')">Check Leave Status</button>
+          <button class="chat-chip" onclick="sendQuickReply('View HR Policies')">View HR Policies</button>
+        </div>
+      </div>
+
+      <div class="chatbot-input-area">
+        <input type="text" id="chatbotInput" placeholder="Type your message..." onkeypress="handleChatKeyPress(event)">
+        <button class="chatbot-send-btn" onclick="sendChatMessage()">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+
+    <button class="chatbot-toggle-btn" id="chatbotToggleBtn" onclick="toggleChatbot()">
+      <i class="fas fa-robot"></i>
+    </button>
   </div>
 
   <script>
@@ -611,6 +864,116 @@
           });
       }
     });
+
+    // Chatbot Logic
+    function toggleChatbot() {
+      const win = document.getElementById("chatbotWindow");
+      const icon = document.querySelector("#chatbotToggleBtn i");
+      win.classList.toggle("open");
+      if (win.classList.contains("open")) {
+        icon.classList.remove("fa-comment-dots");
+        icon.classList.add("fa-times");
+      } else {
+        icon.classList.remove("fa-times");
+        icon.classList.add("fa-comment-dots");
+      }
+    }
+
+    function sendQuickReply(text) {
+      document.getElementById("chatbotInput").value = text;
+      sendChatMessage();
+    }
+
+    function handleChatKeyPress(event) {
+      if (event.key === 'Enter') {
+        sendChatMessage();
+      }
+    }
+
+    async function sendChatMessage() {
+      const input = document.getElementById("chatbotInput");
+      const msgText = input.value.trim();
+      if (!msgText) return;
+
+      const messagesContainer = document.getElementById("chatbotMessages");
+
+      // Add user message
+      const userDiv = document.createElement("div");
+      userDiv.className = "chat-msg user";
+      userDiv.innerText = msgText;
+      messagesContainer.appendChild(userDiv);
+
+      input.value = "";
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+      // Add loading state
+      const loadingDiv = document.createElement("div");
+      loadingDiv.className = "chat-msg bot";
+      loadingDiv.innerText = "Typing...";
+      loadingDiv.id = "chat-loading";
+      messagesContainer.appendChild(loadingDiv);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+      try {
+        const GEMINI_API_KEY = "AIzaSyBljMSLoh8IVOcDYLhKW13d0MJUx5kjmQk";
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+        let userName = "there";
+        const nameEl = document.getElementById("profile-name");
+        if (nameEl && nameEl.textContent !== "...") {
+          userName = nameEl.textContent.split(" ")[0];
+        }
+
+        const prompt = `You are a smart, empathetic, ego-free HR Assistant for our company. 
+        Guidelines:
+        1. Empathy: Treat the user (${userName}) like a friend. Any reason for leave (movie, vacation, rest) is valid and approved without judgment.
+        2. Leaves: They have 12 Casual Leaves and 5 Sick Leaves. If they ask to apply, tell them it's approved and ask them to apply in the 'My Track' tab.
+        3. Other queries: Guide salary/pay to 'My Finance', policies to 'My Policy', office/desk to 'My Campus'.
+        4. Tone: Very short (1-2 sentences), sweet, and helpful. Do not use markdown like ** or ## in your response, use simple text.
+        
+        User Question: ${msgText}`;
+
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  { text: prompt }
+                ]
+              }
+            ]
+          })
+        });
+
+        const data = await response.json();
+
+        document.getElementById("chat-loading").remove();
+
+        const botDiv = document.createElement("div");
+        botDiv.className = "chat-msg bot";
+
+        if (data.candidates && data.candidates.length > 0) {
+          botDiv.innerText = data.candidates[0].content.parts[0].text;
+        } else if (data.error && data.error.message) {
+          botDiv.innerText = "API Error: " + data.error.message;
+        } else {
+          botDiv.innerText = "I'm sorry, I couldn't process that request right now.";
+        }
+
+        messagesContainer.appendChild(botDiv);
+      } catch (error) {
+        document.getElementById("chat-loading").remove();
+        const errorDiv = document.createElement("div");
+        errorDiv.className = "chat-msg bot";
+        errorDiv.innerText = "Sorry, error connecting to Gemini AI.";
+        messagesContainer.appendChild(errorDiv);
+        console.error("Gemini API Error:", error);
+      }
+
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
   </script>
 </body>
 
