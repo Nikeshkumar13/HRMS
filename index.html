@@ -992,10 +992,10 @@
       btn.disabled = true;
       btn.style.opacity = '0.82';
 
-      fetch('https://default7359f89671e24daeb8a315cdf97f2f.10.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2cb34a7d76d943b0bf9604e7283d3c23/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=cXVoaib8Ce__kB8XkXZ_4deGeifbq9m302dSoa1axxA', {
+      fetch('/api/powerautomate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: username, password: password })
+        body: JSON.stringify({ action: 'loginAuth', payload: { email: username, password: password } })
       })
         .then(function (res) { return res.json(); })
         .then(function (data) {
