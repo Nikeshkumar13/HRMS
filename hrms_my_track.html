@@ -1121,7 +1121,7 @@
 
       <script>
         // Power Automate Backend Integration for Profile Name
-        const POWER_AUTOMATE_GET_URL = "https://default7359f89671e24daeb8a315cdf97f2f.10.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/ec32b60336464dcf875ee72b34c70463/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=KA0ATqlhW8Tx7IdB9wmtWdNz_KMt_gGuPf0bUbMA0g4";
+        const BACKEND_URL = "/api/powerautomate";
 
         window.onload = function() {
           fetchProfileData();
@@ -1131,8 +1131,11 @@
         async function fetchProfileData() {
           try {
             const userEmail = localStorage.getItem("userEmail") || "";
-            const finalUrl = POWER_AUTOMATE_GET_URL + "&email=" + encodeURIComponent(userEmail);
-            const response = await fetch(finalUrl);
+            const response = await fetch(BACKEND_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ action: "getProfile", payload: { email: userEmail } })
+            });
 
             let data = await response.json();
 
@@ -1198,9 +1201,6 @@
         }
 
         // Leave Application Logic
-        // PLACEHOLDER: The user will paste their Power Automate Webhook URLs here
-        const LEAVE_POST_URL = "https://default7359f89671e24daeb8a315cdf97f2f.10.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/8b0565b89f0846dea19d206e6c7112de/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=A_ns8iYp_cYxLsd6rVFfB7m6pa8_9jkLjFN-Svw0o44";
-        const LEAVE_GET_URL = "PASTE_YOUR_GET_WEBHOOK_URL_HERE";
 
         async function submitLeave() {
           const fromDate = document.getElementById('leave-from').value;
@@ -1236,10 +1236,10 @@
           try {
             console.log("Sending Leave Application to Power Automate:", payload);
 
-            const response = await fetch(LEAVE_POST_URL, {
+            const response = await fetch(BACKEND_URL, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
+              body: JSON.stringify({ action: "postLeave", payload: payload })
             });
     
             if (response.ok) {
@@ -1264,18 +1264,18 @@
         }
 
         async function fetchLeaveHistory() {
-          const userEmail = localStorage.getItem("userEmail");
-          if (!userEmail || LEAVE_GET_URL === "PASTE_YOUR_GET_WEBHOOK_URL_HERE") {
-             console.log("No user email or LEAVE_GET_URL is not set.");
+          const userEmail = localStorage.getItem("userEmail") || "kumar123@gmail.com"; // Fallback for testing
+          if (!userEmail) {
+             console.log("No user email is set.");
+             document.getElementById('leave-table-body').innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 20px;">Please login to view leaves</td></tr>';
              return;
           }
 
           try {
-            // Depending on your Power Automate setup, this might be a POST with body or GET with URL params
-            const response = await fetch(LEAVE_GET_URL, {
+            const response = await fetch(BACKEND_URL, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email: userEmail })
+              body: JSON.stringify({ action: "getLeave", payload: { email: userEmail } })
             });
 
             if (response.ok) {
@@ -1319,8 +1319,6 @@
         }
 
         // Attendance Power Automate Integration
-        const ATTENDANCE_GET_URL = "https://default7359f89671e24daeb8a315cdf97f2f.10.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/5f1f12dbae0942f6bb095b118eff0f71/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=7ttMB5nkPsUbjZMHh7GRb8BnIlBxMIJxWmhanVENtaU";
-
         async function fetchAttendanceData() {
           const month = document.getElementById('attendance-month').value;
           if (!month) {
@@ -1334,16 +1332,13 @@
             return;
           }
 
-          if (ATTENDANCE_GET_URL === "PASTE_YOUR_ATTENDANCE_WEBHOOK_URL_HERE") {
-            alert("Please paste your Power Automate URL in the hrms_my_track.html code (ATTENDANCE_GET_URL) first.");
-            return;
-          }
-
-          const url = ATTENDANCE_GET_URL + "&month=" + encodeURIComponent(month) + "&email=" + encodeURIComponent(userEmail);
-          
           try {
             console.log("Fetching attendance for:", month);
-            const response = await fetch(url, { method: 'POST' });
+            const response = await fetch(BACKEND_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: "getAttendance", payload: { month: month, email: userEmail } })
+            });
             
             if (!response.ok) {
                 throw new Error("Failed to fetch data");
