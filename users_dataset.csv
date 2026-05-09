@@ -1,0 +1,8 @@
+EmpID,Name,Email,Password,Role,Department,Designation,Phone,Status
+EMP001,Nikesh Kumar,nikeshkumarpottabathina@gmail.com,Nikesh13@,Employee,IT,Software Engineer,9876543210,Active
+EMP002,Nikesh HR,nikesh@gmail.com,Nikesh123,HR,Human Resources,HR Manager,9876543211,Active
+EMP003,Manga,manga@gmail.com,123456789,Employee,IT,Frontend Developer,9876543212,Active
+EMP004,Tarun,tarun123@gmail.com,Tarun123,Employee,Finance,Accountant,9876543213,Active
+EMP005,Dinesh,dinesh2821@gmail.com,dinesh2821,Employee,IT,Backend Developer,9876543214,Active
+EMP006,Ramesh,ramesh@gmail.com,Ramesh123,Employee,Sales,Sales Executive,9876543215,Active
+EMP007,Priya,priya.hr@gmail.com,PriyaHR@123,HR,Human Resources,HR Executive,9876543216,Active
