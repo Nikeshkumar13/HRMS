@@ -785,7 +785,7 @@
               </div>
             </div>
             <div class="btn-submit-container">
-              <button class="btn-apply">Apply OD</button>
+              <button class="btn-apply" onclick="submitOD()">Apply OD</button>
             </div>
           </div>
 
@@ -843,7 +843,7 @@
               </div>
             </div>
             <div class="btn-submit-container">
-              <button class="btn-apply">Apply Permission</button>
+              <button class="btn-apply" onclick="submitPermission()">Apply Permission</button>
             </div>
           </div>
 
@@ -891,7 +891,7 @@
               </div>
             </div>
             <div class="btn-submit-container">
-              <button class="btn-apply">Apply For Vacation</button>
+              <button class="btn-apply" onclick="submitVacation()">Apply For Vacation</button>
             </div>
           </div>
 
@@ -1123,6 +1123,99 @@
         // Power Automate Backend Integration for Profile Name
         const BACKEND_URL = "/api/powerautomate";
 
+        async function submitOD() {
+          const fromDate = document.querySelector('#section-od input[type="date"]:nth-of-type(1)').value;
+          const toDate = document.querySelector('#section-od input[type="date"]:nth-of-type(2)').value;
+          const purpose = document.querySelector('#section-od textarea').value;
+
+          if (!fromDate || !toDate || !purpose) {
+            alert("Please fill all OD fields.");
+            return;
+          }
+
+          const userEmail = localStorage.getItem("userEmail") || "unknown@domain.com";
+          const payload = {
+            email: userEmail,
+            fromDate: fromDate,
+            toDate: toDate,
+            totalDays: 1, // Default for OD
+            leaveType: "On Duty",
+            reason: purpose,
+            appliedOn: new Date().toISOString().split('T')[0]
+          };
+
+          try {
+            const response = await fetch(BACKEND_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: "postLeave", payload: payload })
+            });
+            if (response.ok) alert("OD Applied Successfully!");
+          } catch (error) { console.error(error); }
+        }
+
+        async function submitPermission() {
+          const date = document.querySelector('#section-permissions input[type="date"]').value;
+          const type = document.querySelector('#section-permissions select').value;
+          const reason = document.querySelector('#section-permissions input[type="text"]').value;
+
+          if (!date || !type || !reason) {
+            alert("Please fill all Permission fields.");
+            return;
+          }
+
+          const userEmail = localStorage.getItem("userEmail") || "unknown@domain.com";
+          const payload = {
+            email: userEmail,
+            fromDate: date,
+            toDate: date,
+            totalDays: 0.1, 
+            leaveType: "Permission: " + type,
+            reason: reason,
+            appliedOn: new Date().toISOString().split('T')[0]
+          };
+
+          try {
+            const response = await fetch(BACKEND_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: "postLeave", payload: payload })
+            });
+            if (response.ok) alert("Permission Applied Successfully!");
+          } catch (error) { console.error(error); }
+        }
+
+        async function submitVacation() {
+          const fromDate = document.querySelector('#section-vacation input[type="date"]').value;
+          const assigned = document.querySelector('#section-vacation textarea').value;
+
+          if (!fromDate || !assigned) {
+            alert("Please fill Vacation fields.");
+            return;
+          }
+
+          const userEmail = localStorage.getItem("userEmail") || "unknown@domain.com";
+          const payload = {
+            email: userEmail,
+            fromDate: fromDate,
+            toDate: fromDate,
+            totalDays: 0, 
+            leaveType: "Vacation",
+            reason: "Vacation Request",
+            workAssignedTo: assigned,
+            appliedOn: new Date().toISOString().split('T')[0]
+          };
+
+          try {
+            const response = await fetch(BACKEND_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: "postLeave", payload: payload })
+            });
+            if (response.ok) alert("Vacation Request Sent!");
+          } catch (error) { console.error(error); }
+        }
+
         window.onload = function() {
           fetchProfileData();
           fetchLeaveHistory();
@@ -1292,10 +1385,10 @@
                 const tr = document.createElement('tr');
                 
                 // Set status color
-                let statusBadge = leave.Status || "Pending";
+                let statusBadge = (typeof leave.Status === 'object' && leave.Status !== null) ? leave.Status.Value : (leave.Status || "Pending");
                 let statusColor = "#f39c12"; // Orange for pending
-                if(statusBadge.toLowerCase() === "approved") statusColor = "#2ecc71"; // Green
-                if(statusBadge.toLowerCase() === "rejected") statusColor = "#e74c3c"; // Red
+                if(statusBadge && statusBadge.toLowerCase() === "approved") statusColor = "#2ecc71"; // Green
+                if(statusBadge && statusBadge.toLowerCase() === "rejected") statusColor = "#e74c3c"; // Red
 
                 tr.innerHTML = `
                   <td>${index + 1}</td>
