@@ -1385,10 +1385,23 @@
                 const tr = document.createElement('tr');
                 
                 // Set status color
-                let statusBadge = (typeof leave.Status === 'object' && leave.Status !== null) ? leave.Status.Value : (leave.Status || "Pending");
+                // Try to find status in different possible SharePoint internal names
+                let rawStatus = leave.Status || leave.status || leave.StatusValue || leave.status_value || leave.LeaveStatus || "Pending";
+                let statusBadge = (typeof rawStatus === 'object' && rawStatus !== null) ? rawStatus.Value : rawStatus;
+                
                 let statusColor = "#f39c12"; // Orange for pending
-                if(statusBadge && statusBadge.toLowerCase() === "approved") statusColor = "#2ecc71"; // Green
-                if(statusBadge && statusBadge.toLowerCase() === "rejected") statusColor = "#e74c3c"; // Red
+                let cleanStatus = statusBadge ? statusBadge.toString().toLowerCase().trim() : "";
+                
+                if(cleanStatus === "approved") {
+                    statusBadge = "Approved";
+                    statusColor = "#2ecc71"; // Green
+                } else if(cleanStatus === "rejected") {
+                    statusBadge = "Rejected";
+                    statusColor = "#e74c3c"; // Red
+                } else {
+                    statusBadge = "Pending";
+                    statusColor = "#f39c12"; // Orange
+                }
 
                 tr.innerHTML = `
                   <td>${index + 1}</td>
