@@ -1327,7 +1327,28 @@
           };
 
           try {
-            console.log("Sending Leave Application to Power Automate:", payload);
+            console.log("Starting AI Verification with Gemini...");
+            const aiResponse = await fetch("/api/chat", {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                message: `As an HR assistant, analyze this leave request. 
+                Reason: "${reason}"
+                Is this a professional and valid reason for a ${type}? 
+                Reply with only "APPROVED" or "REJECTED" followed by a 1-sentence explanation.` 
+              })
+            });
+
+            const aiData = await aiResponse.json();
+            const aiDecision = aiData.reply || "";
+
+            if (aiDecision.includes("REJECTED")) {
+              alert("AI Verification Failed: Your reason is not professional enough. \n\nAI Feedback: " + aiDecision);
+              return;
+            }
+
+            console.log("AI Verified! Sending to Power Automate:", payload);
+            alert("AI Verified: Professional Reason. Submitting to Manager...");
 
             const response = await fetch(BACKEND_URL, {
               method: 'POST',
