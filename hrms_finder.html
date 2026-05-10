@@ -375,15 +375,18 @@
 
   <script>
     // Power Automate Backend Integration for Profile Name
-    const POWER_AUTOMATE_GET_URL = "https://default7359f89671e24daeb8a315cdf97f2f.10.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/ec32b60336464dcf875ee72b34c70463/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=KA0ATqlhW8Tx7IdB9wmtWdNz_KMt_gGuPf0bUbMA0g4";
+    const BACKEND_URL = "/api/powerautomate";
 
     window.onload = fetchProfileData;
 
     async function fetchProfileData() {
       try {
         const userEmail = localStorage.getItem("userEmail") || "";
-        const finalUrl = POWER_AUTOMATE_GET_URL + "&email=" + encodeURIComponent(userEmail);
-        const response = await fetch(finalUrl);
+        const response = await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "getProfile", payload: { email: userEmail } })
+        });
         
         let data = await response.json();
         
